@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class CreateTableBank {
 
-    private String driver = "com.mysql.jdbc.Driver";
+    private String driver = "com.mysql.cj.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/bank";
     private String login = "root";
     private String password = "";

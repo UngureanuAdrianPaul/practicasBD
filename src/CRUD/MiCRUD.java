@@ -9,7 +9,7 @@ public class MiCRUD {
 
     // atributtes
 
-    private String driver = "com.mysql.jdbc.Driver";
+    private String driver = "com.mysql.cj.jdbc.Driver";
     private String url = "jdbc:mysql://localhost:3306/";
     private String user = "root";
     private String password = "";
@@ -67,12 +67,78 @@ public class MiCRUD {
         }
     }
 
+    public boolean useStatement(String query) {
+
+        try {
+            return (0 == this.statement.executeUpdate(query));
+        } catch (SQLException e) {
+            return false;
+        }
+
+    }
+
     // create
 
-    public boolean createTable(String name, MyColumn[] columns, MyConstraint[] constraints) {
+    public String createTable(String name, MyColumn[] columns, MyConstraint[] constraints) {
 
-        
+        if (columns == null || constraints == null) {
+            return null;
+        } else {
+            for (MyColumn colActual : columns) {
+                if (colActual == null) {
+                    return null;
+                }
 
+            }
+            for (MyConstraint constActual : constraints) {
+                if (constActual == null) {
+                    return null;
+                }
+
+            }
+        }
+        String myQuery = "CREATE TABLE ".concat(name) + " (";
+        for (int i = 0; i < columns.length; i++) {
+            myQuery = myQuery + (columns[i].getColName()) + " " + columns[i].getColType();
+            if (columns[i].isNulleable()) {
+                myQuery = myQuery + ",";
+            } else {
+                myQuery = myQuery + "N0T NULL" + ",";
+            }
+            // there is always at least one constraint for the last,
+        }
+
+        for (int i = 0; i < constraints.length - 1; i++) {
+            myQuery = myQuery + " CONSTRAINT " + constraints[i].getParams()[0];
+            if (constraints[i].getParams().length == 2) { // PRIMARY KEY
+                myQuery = myQuery + " PRIMARY KEY (";
+                myQuery = myQuery + constraints[i].getParams()[1] + ")";
+            } else { // FOREIGN KEY
+                myQuery = myQuery + " FOREIGN KEY (";
+                myQuery = myQuery + constraints[i].getParams()[1] + ")";
+                myQuery = myQuery + " REFERENCES ";
+                myQuery = myQuery + constraints[i].getParams()[2] + "(";
+                myQuery = myQuery + constraints[i].getParams()[3] + ")";
+
+            }
+            myQuery = myQuery + ",";
+
+        }
+        myQuery = myQuery + " CONSTRAINT " + constraints[constraints.length - 1].getParams()[0];
+        if (constraints[constraints.length - 1].getParams().length == 2) { // PRIMARY KEY
+            myQuery = myQuery + " PRIMARY KEY (";
+            myQuery = myQuery + constraints[constraints.length - 1].getParams()[1] + ")";
+        } else { // FOREIGN KEY
+            myQuery = myQuery + " FOREIGN KEY (";
+            myQuery = myQuery + constraints[constraints.length - 1].getParams()[1] + ")";
+            myQuery = myQuery + " REFERENCES ";
+            myQuery = myQuery + constraints[constraints.length - 1].getParams()[2] + "(";
+            myQuery = myQuery + constraints[constraints.length - 1].getParams()[3] + ")";
+
+        }
+        myQuery = myQuery + ")";
+        return myQuery;
+        // copy and paste for last element of constraint
 
     }
 
