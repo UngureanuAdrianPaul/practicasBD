@@ -101,15 +101,15 @@ public class MiCRUD {
         for (int i = 0; i < columns.length; i++) {
             myQuery = myQuery + (columns[i].getColName()) + " " + columns[i].getColType();
             if (columns[i].isNulleable()) {
-                myQuery = myQuery + ",";
+                myQuery = myQuery + ", ";
             } else {
-                myQuery = myQuery + "N0T NULL" + ",";
+                myQuery = myQuery + " N0T NULL" + ", ";
             }
             // there is always at least one constraint for the last,
         }
 
         for (int i = 0; i < constraints.length - 1; i++) {
-            myQuery = myQuery + " CONSTRAINT " + constraints[i].getParams()[0];
+            myQuery = myQuery + "CONSTRAINT " + constraints[i].getParams()[0];
             if (constraints[i].getParams().length == 2) { // PRIMARY KEY
                 myQuery = myQuery + " PRIMARY KEY (";
                 myQuery = myQuery + constraints[i].getParams()[1] + ")";
@@ -121,10 +121,10 @@ public class MiCRUD {
                 myQuery = myQuery + constraints[i].getParams()[3] + ")";
 
             }
-            myQuery = myQuery + ",";
+            myQuery = myQuery + ", ";
 
         }
-        myQuery = myQuery + " CONSTRAINT " + constraints[constraints.length - 1].getParams()[0];
+        myQuery = myQuery + "CONSTRAINT " + constraints[constraints.length - 1].getParams()[0];
         if (constraints[constraints.length - 1].getParams().length == 2) { // PRIMARY KEY
             myQuery = myQuery + " PRIMARY KEY (";
             myQuery = myQuery + constraints[constraints.length - 1].getParams()[1] + ")";
