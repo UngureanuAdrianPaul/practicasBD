@@ -10,7 +10,7 @@ public class App {
     public static void main(String[] args) {
 
         MiCRUD miAcceso = new MiCRUD("bank");
-        // 0 null o algo null
+
         // 1er caso- 0 columnas
         // con 1 constraint
         // con mas de 1 constraint
@@ -28,17 +28,22 @@ public class App {
         columns[1].setColType("varchar(30)");
         columns[1].setNulleable(true);
 
-        MyConstraint[] restri = new MyConstraint[3];
+        MyConstraint[] restri = new MyConstraint[1];
         restri[0] = new MyConstraint(true);
-        restri[0].setParams(new String[] { "pk_nombre", "col_nombre" });
-        restri[1] = new MyConstraint(false);
-        restri[1].setParams(new String[] { "fk_nombre", "apellido", "habitacion", "num" });
-        restri[2] = new MyConstraint(false);
-        restri[2].setParams(new String[] { "fk_nombre1", "apellido1", "habitacion1", "num" });
+        restri[0].setParams(new String[] { "pk_nombre", "nombre" });
+        
 
         // MyConstraint[] restricciones = new MyConstraint[1];
-
-        System.out.println(miAcceso.createTable("miTabla", columns, restri));
+        miAcceso.initDriver();
+        miAcceso.initConnection();
+        miAcceso.createStatement();
+        String miQuery = miAcceso.createTable("enfermos", columns, restri);
+        System.out.println(miQuery);
+        if (miAcceso.useStatement(miQuery)) {
+            System.out.println("Tabla creada");
+        } else {
+            System.out.println("ERROR!!");
+        }
 
     }
 

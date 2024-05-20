@@ -72,6 +72,7 @@ public class MiCRUD {
         try {
             return (0 == this.statement.executeUpdate(query));
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             return false;
         }
 
@@ -136,7 +137,7 @@ public class MiCRUD {
             myQuery = myQuery + constraints[constraints.length - 1].getParams()[3] + ")";
 
         }
-        myQuery = myQuery + ")";
+        myQuery = myQuery + ");";
         return myQuery;
         // copy and paste for last element of constraint
 
